@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Trigger on push to main branch
+  push:
+    branches:
+      - main
+
+  # Allow manual trigger from Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # If you need to build your site (e.g., with npm, Jekyll, Hugo, etc.)
+      # Uncomment and modify the following steps as needed:
+
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+
+      # - name: Install dependencies
+      #   run: npm ci
+
+      # - name: Build site
+      #   run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Directory containing your static files
+          # Change this to your build output directory (e.g., dist, build, _site, public)
+          publish_dir: ./src
+          # Branch to deploy to
+          publish_branch: gh-pages
+          # Optional: Add CNAME file for custom domain
+          # cname: example.com
